@@ -1,0 +1,31 @@
+---
+- name: Solr digs lsof
+  yum:
+    name: lsof
+    state: present
+
+- name: get Solr {{ solr_version }}
+  get_url:
+    url: '{{ solr_url }}'
+    dest: '/tmp/{{ solr_url | basename }}'
+  tags: solr
+
+- name: Extract Solr {{ solr_version }} archive to /tmp
+  unarchive:
+    src: '/tmp/{{ solr_url | basename }}'
+    dest: /tmp/
+    remote_src: True
+  tags: solr
+  
+- name: 'Solr is installed and runnning, defaulting to -i: /opt, -d: /var/solr, -p: 8983, -u: solr, -s: solr.'
+  shell: >
+    /tmp/solr-{{ solr_version }}/bin/install_solr_service.sh
+    /tmp/{{ solr_url | basename }}
+#    -i {{ solr_install_dir }}
+#    -d {{ solr_home }}
+#    -u {{ solr_user }}
+#    -s {{ solr_service_name }}
+#    -p {{ solr_port }}
+  args:  
+    creates: '{{ solr_path }}/bin/solr'
+  tags: solr

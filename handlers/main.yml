@@ -1,0 +1,15 @@
+---
+- name: restart Solr
+  service: 
+    name: solr
+    state: restartd
+
+- name: stop Solr
+  service:
+    name: solr
+    state: stopped
+
+- name: start Solr
+  service:
+    name: solr
+    state: started
