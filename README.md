@@ -1,12 +1,7 @@
-Role Name
+SOLR
 =========
 
-A brief description of the role goes here.
-
-Requirements
-------------
-
-NLCR.java-oracle
+Simple for SOLR 6 installation
 
 Role Variables
 --------------
@@ -29,7 +24,7 @@ i will uncomment these vars in tasks/main.yml in a future
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+NLCR.java-oracle
 
 Example Playbook
 ----------------
@@ -38,7 +33,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: NLCR.solr, solr_url: https://archive.apache.org/dist/lucene/solr/6.4.2/solr-6.4.2.tgz, solr_version: 6.4.2 }
 
 License
 -------
@@ -48,4 +43,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Rudolf Kreibich
