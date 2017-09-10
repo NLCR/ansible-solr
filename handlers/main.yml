@@ -1,8 +1,8 @@
 ---
 - name: restart Solr
-  service: 
+  service:
     name: solr
-    state: restartd
+    state: restarted
 
 - name: stop Solr
   service:
