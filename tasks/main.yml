@@ -16,16 +16,30 @@
     dest: /tmp/
     remote_src: True
   tags: solr
-  
+
 - name: 'Solr is installed and runnning, defaulting to -i: /opt, -d: /var/solr, -p: 8983, -u: solr, -s: solr.'
   shell: >
     /tmp/solr-{{ solr_version }}/bin/install_solr_service.sh
     /tmp/{{ solr_url | basename }}
+    -p {{ solr_port }}
 #    -i {{ solr_install_dir }}
 #    -d {{ solr_home }}
 #    -u {{ solr_user }}
 #    -s {{ solr_service_name }}
-#    -p {{ solr_port }}
-  args:  
+  args:
     creates: '{{ solr_path }}/bin/solr'
   tags: solr
+
+- name: Solr configuration is preset
+  template:
+    src: solr.in.sh
+    owner: root
+    group: solr
+    dest: /etc/default/solr.in.sh
+    mode: 0610
+  notify: restart Solr
+
+- name: Solr will start after restart
+  service:
+    name: solr
+    enabled: yes
