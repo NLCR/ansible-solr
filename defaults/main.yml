@@ -1,4 +1,15 @@
 ---
-solr_url: https://archive.apache.org/dist/lucene/solr/6.4.2/solr-6.4.2.tgz
+# SOLR
 solr_version: 6.4.2
+solr_url: 'https://archive.apache.org/dist/lucene/solr/{{ solr_version }}/solr-{{ solr_version }}.tgz'
 solr_path: '/opt/solr-{{ solr_version }}'
+solr_pid_dir: /var/solr
+solr_home: /var/solr/data
+log4j_props: /var/solr/log4j.properties
+solr_logs_dir: /var/solr/logs
+solr_port: 8983
+solr_heap: 512m
+solr_java_mem: -Xms512m -Xmx512m
+
+## ZooKeeper
+zk_host:
