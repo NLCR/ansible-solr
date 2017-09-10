@@ -2,6 +2,7 @@ SOLR
 =========
 
 Simple for SOLR 6 installation
+Based on: https://lucene.apache.org/solr/guide/6_6/taking-solr-to-production.html#taking-solr-to-production
 
 Role Variables
 --------------
