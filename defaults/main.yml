@@ -1,15 +1,24 @@
 ---
-# SOLR
-solr_version: 6.4.2
+# SOLR Installation
+solr_version: 6.6.0
 solr_url: 'https://archive.apache.org/dist/lucene/solr/{{ solr_version }}/solr-{{ solr_version }}.tgz'
-solr_path: '/opt/solr-{{ solr_version }}'
+solr_install_dir: /opt
+
+# SOLR process
+solr_user: solr
+solr_group: solr
+solr_service_name: solr
+
+# SOLR template
+# solr_home in solr.in.sh.j2 template add /data
+solr_home: /var/solr
 solr_pid_dir: /var/solr
-solr_home: /var/solr/data
-log4j_props: /var/solr/log4j.properties
-solr_logs_dir: /var/solr/logs
 solr_port: 8983
 solr_heap: 512m
 solr_java_mem: -Xms512m -Xmx512m
+log4j_props: /var/solr/log4j.properties
+solr_logs_dir: /var/solr/logs
 
 ## ZooKeeper
-zk_host:
+#zk_hosts:
+#- vagrant0

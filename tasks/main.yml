@@ -4,7 +4,7 @@
     name: lsof
     state: present
 
-- name: get Solr {{ solr_version }}
+- name: get Solr {{ solr_version }} via {{ solr_url }}
   get_url:
     url: '{{ solr_url }}'
     dest: '/tmp/{{ solr_url | basename }}'
@@ -17,26 +17,34 @@
     remote_src: True
   tags: solr
 
-- name: 'Solr is installed and runnning, defaulting to -i: /opt, -d: /var/solr, -p: 8983, -u: solr, -s: solr.'
+- name: 'Solr service is installed and started: -i {{ solr_install_dir | default("/opt") }} -d {{ solr_home | default("/var/solr") }} -p {{ solr_port | default("8983") }} -u {{ solr_user | default("solr") }} -s {{ solr_service_name | default("solr") }}'
   shell: >
     /tmp/solr-{{ solr_version }}/bin/install_solr_service.sh
     /tmp/{{ solr_url | basename }}
-    -p {{ solr_port }}
-#    -i {{ solr_install_dir }}
-#    -d {{ solr_home }}
-#    -u {{ solr_user }}
-#    -s {{ solr_service_name }}
+    -p {{ solr_port | default("8983") }}
+    -u {{ solr_user | default("solr") }}
+    -i {{ solr_install_dir | default("/opt") }}
+    -d {{ solr_home | default("/var/solr") }}
+    -u {{ solr_user | default("solr") }}
+    -s {{ solr_service_name | default("solr") }}
   args:
-    creates: '{{ solr_path }}/bin/solr'
+    creates: '{{ solr_install_dir | default("/opt") }}/solr-{{ solr_version }}/bin/solr'
   tags: solr
 
-- name: Solr configuration is preset
+- name:  '{{ solr_user }}:{{ solr_group }} owns: {{ solr_install_dir | default("/opt") }}/solr-{{ solr_version }}, becase Solr is watching for undefined log dir and would fail on restart otherwise.'
+  file:
+    path: '{{ solr_install_dir | default("/opt") }}/solr-{{ solr_version }}'
+    owner: '{{ solr_user }}'
+    group: '{{ solr_group }}'
+
+- name: Solr configuration is present
   template:
-    src: solr.in.sh
+    src: solr.in.sh.j2
     owner: root
-    group: solr
+    group: '{{ solr_group }}'
     dest: /etc/default/solr.in.sh
     mode: 0610
+    backup: yes
   notify: restart Solr
 
 - name: Solr will start after restart
